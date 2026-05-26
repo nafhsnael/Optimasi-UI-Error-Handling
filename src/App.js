@@ -6,17 +6,14 @@ import React, {
   useTransition,
 } from "react";
 import "./App.css";
+import { mockProducts } from "./mockProducts";
 
-const NORMAL_API_URL = "https://fakestoreapi.com/products";
-const ERROR_API_URL = "https://fakestoreapi.com/products-salah-404";
+
 
 function expensiveCalculation(products, filter, sort) {
   console.log("⚠️ Komputasi berat berjalan...");
 
-  let dummy = 0;
-  for (let i = 0; i < 3000000; i += 1) {
-    dummy += i % 10;
-  }
+  // Dummy computation removed
 
   let result = [...products];
 
@@ -65,15 +62,12 @@ function useProducts(simulateNetworkError) {
     setError("");
 
     try {
-      const url = simulateNetworkError ? ERROR_API_URL : NORMAL_API_URL;
-      const response = await fetch(url);
-
-      if (!response.ok) {
-        throw new Error(`HTTP ${response.status} - Gagal mengambil data produk`);
+      // Use mock product data for makeup theme
+      setProducts(mockProducts);
+      // Simulated network error handling retained
+      if (simulateNetworkError) {
+        setError("Simulated network error");
       }
-
-      const data = await response.json();
-      setProducts(Array.isArray(data) ? data : []);
     } catch (err) {
       setProducts([]);
       setError(err.message || "Terjadi kesalahan saat mengambil data");
